@@ -1,0 +1,25 @@
+<html>
+<body>
+<% reses.each do |search, results| %>
+<a href="<%=search.url %>"><h2><%=search.name%></h2></a>
+<table>
+  <thead>
+    <tr>
+      <th>Photo</th>
+      <th>Price</th>
+      <th>Title</th>
+    </tr>
+  </thead>
+  <tbody>
+  <% results.each do |result| %>
+    <tr>
+      <td><a href="<%= result.url %>"><img src="<%= result.first_image_medium_url %>" /></a></td>
+      <td><b><%= result.listing.price %></b></td>
+      <td><a href="<%= result.url %>"><%= result.listing.title %></a></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
+<% end %>
+</body>
+</html>

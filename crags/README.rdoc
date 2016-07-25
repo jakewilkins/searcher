@@ -1,0 +1,70 @@
+= crags
+
+A library to help search across multiple craigslist locations.
+
+== Usage
+
+There are two ways to search craigslist using crags. You can search by keyword
+in a single location scoped to a category. You can also search by keyword
+across a country scoped by category. Each search type also has a set of
+configurable options.
+
+=== Single Location Search
+
+Options:
+  :keyword
+    default: bicycle (because bicycles are awesome)
+  :location
+    default: sfbay.craigslist.com (because that is where it all began)
+  :category
+    default: for sale (because buying another bike is always a good idea)
+
+Locations and Categories are full-on Ruby objects. You can get all of the
+Categories using:
+  Category.all
+
+Search a single craigslist location (e.g. sfbay.craigslist.com)
+  s = Search::Location.new(:keyword => 'shoes')
+  s.keyword     # shoes instead of bicycle
+  s.location    # the sfbay Location
+  s.category    # the 'for sale' Category
+  s.items       # a set of Items that match the search criteria
+
+Each Item has a title, url (which is the link to the item on craigslist), and
+a date, which is the date the item was posted on craigslist.
+
+=== Country Search
+
+Options:
+  :keyword
+    default: bicycle (because bicycles are awesome)
+  :category
+    default: for sale (because buying another bike is always a good idea)
+  :country
+    default: us (because that is where I live)
+  :interval
+    default: 1 (because hammering the cl servers will make em' angry)
+
+Country searches are a combined set of individual location searches. Crags
+imposes a 1 second delay between each location search in order not to overload
+the Craigslist servers. You can change this at your own risk, but doing a lot
+of country wide searches with a 0s interval will probably get your IP banned.
+
+== Installation
+
+  gem install crags
+
+== Note on Patches/Pull Requests 
+
+* Fork the project.
+* Make your feature addition or bug fix.
+* Add tests for it. This is important so I don't break it in a
+  future version unintentionally.
+* Commit, do not mess with rakefile, version, or history.
+  (if you want to have your own version, that is fine but
+  bump version in a commit by itself I can ignore when I pull)
+* Send me a pull request. Bonus points for topic branches.
+
+== Copyright
+
+Copyright (c) 2009 Justin Marney. See LICENSE for details.

@@ -1,0 +1,8 @@
+pkg/
+rdoc
+.DS_Store
+.bundle
+coverage
+vendor
+.bundle
+.rvmrc

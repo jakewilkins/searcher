@@ -1,0 +1,12 @@
+[Unit]
+Description="A searcher for craigslit."
+After=network.target
+
+[Service]
+WorkingDirectory=/home/pi/craigslist
+ExecStart=/home/pi/craigslist/craigslist-searcher start
+ExecStop=/home/pi/craigslist/craigslist-searcher stop
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
