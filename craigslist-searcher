@@ -1,0 +1,60 @@
+#! /bin/bash
+# /etc/init.d/blah
+#
+
+# Some things that run always
+#touch /var/lock/blah
+
+CLDIR=/home/pi/craigslist
+
+function start() {
+  source /etc/craigslist.conf
+
+  BUNDLE=/home/pi/.rubies/ruby-2.3.1/bin/bundle
+
+  nohup $BUNDLE exec rake poll 2> $CLDIR/stderr.nohup 1> $CLDIR/stdout.nohup &
+  #$BUNDLE exec rake poll
+}
+
+function stop() {
+  if [ -f /var/run/craigslist.pid ]; then
+    kill -s INT `cat /var/run/craigslist.pid`
+    if [[ $? == "0" ]]; then
+      echo "cool"
+    else
+      echo "wtf bro $?"
+    fi
+  else
+    echo "ERROR: no PID file found for craigslist runner."
+  fi
+}
+
+function status() {
+  ps -p `cat /var/run/craigslist.pid` -o command=
+}
+
+# Carry out specific functions when asked to by the system
+case "$1" in
+  start)
+    echo -n "Starting craigslist searcher..."
+    start
+    if [ -f /var/run/craigslist.pid ]; then
+      echo " running as PID $(cat /var/run/craigslist.pid)"
+    else
+      echo " failed to start, please check nohup logs in $CLDIR."
+    fi
+    ;;
+  stop)
+    echo -n "Stopping craigslist searcher... "
+    stop
+    ;;
+  status)
+    status
+    ;;
+  *)
+    echo "Usage: /etc/init.d/$0 {start|stop|status}"
+    exit 1
+    ;;
+esac
+
+exit 0
