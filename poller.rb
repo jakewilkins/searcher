@@ -1,8 +1,9 @@
 require_relative 'setup'
 require_relative 'procline'
+require 'logger'
 
 class Poller
-  attr_reader :procline
+  attr_reader :procline, :logger
 
   def self.go
     new.go
@@ -10,6 +11,8 @@ class Poller
 
   def initialize
     @procline = Procline.new
+    @logger = Logger.new("poller.log")
+    logger.level = Logger::WARN
   end
 
   def go
@@ -36,19 +39,19 @@ class Poller
         sleep 1
       end
     end
-    puts "byeeeeeeee!!!"
+    logger.fatal "byeeeeeeee!!!"
   end
 
   def run
     begin
-      print 'beginning search poll...'
+      logger.debug 'beginning search poll...'
       procline.begin_run
       Runner.run
       procline.complete_run
-      puts " search executed successfully, sleeping for two hours!"
+      logger.info " search executed successfully, sleeping for two hours!"
     rescue Exception => boom
       procline.error_run
-      puts "got a #{boom.message}:\n#{boom.backtrace.join("\n")}"
+      logger.error "got a #{boom.message}:\n#{boom.backtrace.join("\n")}"
     end
   end
 end

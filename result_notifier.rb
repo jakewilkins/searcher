@@ -15,11 +15,11 @@ class ResultNotifier
   end
 
   def call
-    updates.each do |subscriber, reses|
+    updates.each do |email_data|
       html = ERB.new(email_template).result(binding)
-      text = build_text_string(reses)
-      subj = "[#{reses.keys.map(&:name).join(', ')}] #{reses.values.map(&:count).inject(:+)} New Results"
-      send_email(subscriber, subj, html, text)
+      text = build_text_string(email_data)
+      subj = "[#{email_data.search_names}] #{email_data.result_count} New Results"
+      send_email(email_data.person, subj, html, text)
     end
   end
 

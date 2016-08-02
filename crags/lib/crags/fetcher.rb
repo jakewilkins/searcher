@@ -14,5 +14,16 @@ module Crags
       resp = session.get(url)
       resp
     end
+
+    def page_available?(url)
+      session = Patron::Session.new(timeout: 10_000, connect_timeout: 10_000)
+      head = session.head(url)
+      if head.status < 400
+        true
+      else
+        false
+      end
+    end
+    module_function :page_available?
   end
 end

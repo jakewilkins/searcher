@@ -16,8 +16,8 @@ class SearchUpdater
         r.search = search
         r.save
 
-        search.subscribers.each do |s|
-          updates.send(s, search, r)
+        search.people.each do |p|
+          updates.send(p, search, r)
         end
       end
     }

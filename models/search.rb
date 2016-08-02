@@ -1,7 +1,7 @@
 require 'json'
 class Search < Sequel::Model
   one_to_many :results
-  one_to_many :subscribers
+  many_to_many :people, join_table: :subscriptions
 
   attr_accessor :url
 

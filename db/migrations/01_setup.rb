@@ -38,10 +38,10 @@ Sequel.migration do
   end
 
   down do
-    drop_table(:results)
+    drop_table(:results, cascade: true)
     drop_table(:subscribers, cascade: true)
-    drop_table(:notifications)
-    drop_table(:searches)
+    drop_table(:notifications, cascade: true)
+    drop_table(:searches, cascade: true)
   end
 end
 

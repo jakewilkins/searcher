@@ -28,11 +28,8 @@ module Setup
   end
 
   def self.poller
-    require 'bundler/setup'
+    do_bundler_setup
 
-    require 'pry' if ENV['DEBUG']
-
-    require 'sequel'
     set_db_url_env
     yield if block_given?
     #Module.const_set(:DB, Sequel.connect(ENV.fetch('DATABASE_URL')))
@@ -40,48 +37,19 @@ module Setup
 
     File.write("/var/run/craigslist.pid", Process.pid) rescue nil
 
-    require_relative 'models/notification'
-    require_relative 'models/result'
-    require_relative 'models/search'
-    require_relative 'models/subscriber'
-
-    require 'crags'
-
-    Crags::Config.defaults[:location] = Crags::Location.new('losangeles.craigslist.org')
-    Crags::Config.defaults[:category_ur] = "http://losangeles.craigslist.org/"
-    Crags::Config.category_url = "http://losangeles.craigslist.org/"
-
-    require_relative 'search_executor'
-    require_relative 'search_updater'
-    require_relative 'result_notifier'
-    require_relative 'runner'
+    do_requires
+    configure_crags
   end
 
   def self.rake
-    require 'bundler/setup'
+    do_bundler_setup
 
-    require 'pry' if ENV['DEBUG']
-
-    require 'sequel'
     set_db_url_env
     Module.const_set(:DB, Sequel.connect(ENV.fetch('DATABASE_URL')))
     #DB = Sequel.connect(ENV.fetch('DATABASE_URL'))
 
-    require_relative 'models/notification'
-    require_relative 'models/result'
-    require_relative 'models/search'
-    require_relative 'models/subscriber'
-
-    require 'crags'
-
-    Crags::Config.defaults[:location] = Crags::Location.new('losangeles.craigslist.org')
-    Crags::Config.defaults[:category_ur] = "http://losangeles.craigslist.org/"
-    Crags::Config.category_url = "http://losangeles.craigslist.org/"
-
-    require_relative 'search_executor'
-    require_relative 'search_updater'
-    require_relative 'result_notifier'
-    require_relative 'runner'
+    do_requires
+    configure_crags
   end
 
   def self.set_db_url_env
@@ -90,6 +58,41 @@ module Setup
         "#{postgres_env("POSTGRES_PASSWORD")}@postgres."\
         "fulcrum/#{postgres_env("POSTGRES_DB")}"
     end
+  end
+
+  def self.postgres_env(name)
+    ENV["POSTGRES_1_ENV_#{name}"]
+  end
+
+  def self.do_bundler_setup
+    require 'bundler/setup'
+
+    require 'pry' if ENV['DEBUG']
+
+    require 'sequel'
+  end
+
+  def self.do_requires
+    require_relative 'models/notification'
+    require_relative 'models/result'
+    require_relative 'models/search'
+    require_relative 'models/person'
+    require_relative 'models/subscription'
+    require_relative 'models/notification_result'
+
+    require_relative 'search_executor'
+    require_relative 'search_updater'
+    require_relative 'result_notifier'
+    require_relative 'runner'
+    require_relative 'subscriber_updates'
+  end
+
+  def self.configure_crags
+    require 'crags'
+
+    Crags::Config.defaults[:location] = Crags::Location.new('losangeles.craigslist.org')
+    Crags::Config.defaults[:category_ur] = "http://losangeles.craigslist.org/"
+    Crags::Config.category_url = "http://losangeles.craigslist.org/"
   end
 
 end
