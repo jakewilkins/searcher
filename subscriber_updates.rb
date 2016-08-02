@@ -5,7 +5,7 @@ module SubscriberUpdates
   def send(person, search, result)
     notif = build_notification_if_needed(person, search)
     NotificationResult.new(notification_id: notif.id, result_id: result.id).tap {|nr|
-      nr.save!
+      nr.save
     }
   end
 
@@ -58,8 +58,6 @@ module SubscriberUpdates
     end
   end
 
-  private
-
   def build_notification_if_needed(person, search)
     notif = Notification.where(person_id: person.id, notified: false).first
     return notif if notif
@@ -68,6 +66,7 @@ module SubscriberUpdates
   end
 
   def build_notification(person, search)
-    Notification.new(person_id: person.id, notified: false).tap {|n| n.save! }
+    Notification.new(person_id: person.id, notified: false).tap {|n| n.save }
   end
 end
+

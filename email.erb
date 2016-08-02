@@ -13,9 +13,9 @@
   <tbody>
   <% results.each do |result| %>
     <tr>
-      <td><a href="<%= result.url %>"><img src="<%= result.first_image_medium_url %>" /></a></td>
-      <td><b><%= result.listing.price %></b></td>
-      <td><a href="<%= result.url %>"><%= result.listing.title %></a></td>
+      <td><a href="<%= result.url %>"><img src="<%= result.image %>" /></a></td>
+      <td><b><%= result.price %></b></td>
+      <td><a href="<%= result.url %>"><%= result.title %></a></td>
     </tr>
   <% end %>
   </tbody>

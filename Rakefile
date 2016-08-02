@@ -46,14 +46,14 @@ namespace :db do
     require "sequel"
     Sequel.extension :migration
 
-    db = Sequel.connect(ENV.fetch("DATABASE_URL"))
+    DB = Sequel.connect(ENV.fetch("DATABASE_URL"))
 
     if args[:version]
       puts "Migrating to version #{args[:version]}"
-      Sequel::Migrator.run(db, "db/migrations", target: args[:version].to_i)
+      Sequel::Migrator.run(DB, "db/migrations", target: args[:version].to_i)
     else
       puts "Migrating to latest"
-      Sequel::Migrator.run(db, "db/migrations")
+      Sequel::Migrator.run(DB,"db/migrations")
     end
   end
 
@@ -62,7 +62,7 @@ namespace :db do
     require "sequel"
     Sequel.extension :migration
 
-    db = Sequel.connect(ENV.fetch("DATABASE_URL"))
+    DB = Sequel.connect(ENV.fetch("DATABASE_URL"))
 
     #if args[:version]
       #puts "Migrating to version #{args[:version]}"

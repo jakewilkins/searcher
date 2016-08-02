@@ -73,6 +73,9 @@ module Setup
   end
 
   def self.do_requires
+    Module::DB.extension :pg_hstore
+    Sequel.extension :pg_hstore_ops
+
     require_relative 'models/notification'
     require_relative 'models/result'
     require_relative 'models/search'
