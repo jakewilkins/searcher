@@ -20,6 +20,7 @@ class ResultNotifier
       text = build_text_string(email_data)
       subj = "[#{email_data.search_names}] #{email_data.result_count} New Results"
       send_email(email_data.person, subj, html, text)
+      email_data.notified!
     end
   end
 
