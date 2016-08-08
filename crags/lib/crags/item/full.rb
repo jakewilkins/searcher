@@ -25,7 +25,9 @@ module Crags
         end
 
         def page_date(page)
-          page.search('p#display-date time').first['datetime']
+          dt = page.search('p#display-date time').first
+          return '' unless dt
+          dt['datetime']
         end
 
         def page_url(page)
@@ -37,7 +39,10 @@ module Crags
         end
 
         def page_attrs(page)
-          page.search('div.mapAndAttrs p.attrgroup').first.search('span').inject({}) {|out, el|
+          attr_group = page.search('div.mapAndAttrs p.attrgroup').first
+          return {} unless attr_group
+
+          attr_group.search('span').inject({}) {|out, el|
             key, val = el.text.split(': ')
             out[key] = val
             out
