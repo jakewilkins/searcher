@@ -22,11 +22,13 @@ module Crags
         end
 
         def elem_path(e)
-          e.search('a:has(span)').first['href']
+          ele = e.search('a:has(span)').first
+          (ele && ele['href']) || ""
         end
 
         def elem_date(e)
-          e.search('time').first['datetime']
+          ele = e.search('time').first
+          (ele && ['datetime']) || ""
         end
 
         def elem_price(e)
