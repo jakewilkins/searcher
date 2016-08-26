@@ -12,12 +12,13 @@ class SearchUpdater
   def call
     SearchExecutor.new(search).each { |cres|
       unless Result.find(url: cres.url)
-        r = Result.from_crag(cres)
-        r.search = search
-        r.save
+        if (r = Result.from_crag(cres))
+          r.search = search
+          r.save
 
-        search.people.each do |p|
-          updates.send(p, search, r)
+          search.people.each do |p|
+            updates.send(p, search, r)
+          end
         end
       end
     }

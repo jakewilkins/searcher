@@ -6,6 +6,7 @@ class Result < Sequel::Model
   attr_writer :listing
 
   def self.from_crag(cres)
+    return nil if cres.full.body.nil?
     new.tap {|r|
       r.url = cres.url
       r.hash = digest(cres.full.body)
