@@ -24,7 +24,7 @@ module Crags
     end
 
     def url_for(path = '/')
-      if path[0..1] == "//"
+      if path[0..1] == "//" || %w|http https|.include?(path.split(':').first)
         URI(path).tap {|u| u.scheme = "https"}.to_s
       else
         URI(search.location.url).tap {|u| u.path = path}.to_s
