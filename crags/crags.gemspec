@@ -13,7 +13,7 @@ Gem::Specification.new do |s|
   s.rubyforge_project = "crags"
   s.files         = Dir["#{`pwd`.chomp}/crags/lib/*.rb"]+Dir["#{`pwd`.chomp}/crags/lib/**/*.rb"]
   s.require_paths = ["lib"]
-  s.add_runtime_dependency("nokogiri", "~> 1.6.4")
+  s.add_runtime_dependency("nokogiri", ">= 1.6.4", "< 1.11.0")
   s.add_runtime_dependency("patron", ">= 0")
   s.add_development_dependency("rake", "~> 0.9.2")
   s.add_development_dependency("rdoc")
